@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function
 from pygame.locals import *
 from itertools import cycle
-from sprites import Spritesheet
-from maps import main_map
+from assets.sprite.sprites import Spritesheet
+from assets.maps.maps import firstmap, secondmap
 import pygame, os, sys, time
 
 WHITE = (236, 240, 241)
@@ -12,6 +12,8 @@ BG = (0, 0, 0)
 BLINK_EVENT = pygame.USEREVENT + 0
 
 pygame.init()
+surf = pygame.display.set_mode((50, 100))
+surf_rect = surf.get_rect()
 disp = pygame.display.set_mode((640, 360))
 disp_rect = disp.get_rect()
 title = pygame.font.Font('utils/fonts/8-BIT WONDER.TTF', 20)
@@ -19,13 +21,14 @@ font = pygame.font.Font('utils/fonts/8-BIT WONDER.TTF', 10)
 fq = pygame.font.Font('utils/fonts/8-BIT WONDER.TTF', 8)
 mapfont = pygame.font.Font('utils/fonts/unifont-9.0.06.ttf', 8)
 
+clock = pygame.time.Clock()
 render_title = title.render('CREEPLING FEAR', True, WHITE)
 render_f = fq.render('Press Q or ESC to Exit', True, WHITE)
-fstage = mapfont.render(main_map(), True, WHITE)
+fstage = mapfont.render(firstmap(), True, WHITE)
 title_rect = render_title.get_rect()
 title_rect.center = (300, 500)
 
-ss = Spritesheet('rpgcritters2.png')
+ss = Spritesheet('assets/sprite_img/rpgcritters2.png')
 image = ss.image_at((0, 0, 16, 16))
 images = []
 
@@ -41,15 +44,14 @@ def animate_text(s):
         time.sleep(0.05)
 
 def main():
+    newx = pygame.USEREVENT + 0
     try:
         title_screen = True
-    	clock = pygame.time.Clock()
-
-    	pygame.display.set_caption('Creepling Fear')
-    	on_text_surface = font.render(
-                'Press any key to start', True, WHITE
+        pygame.display.set_caption('Creepling Fear')
+        on_text_surface = font.render(
+            'Press any key to start', True, WHITE
         )
-	blink_rect = on_text_surface.get_rect()
+        blink_rect = on_text_surface.get_rect()
         blink_rect.center = disp_rect.center
         off_text_surface = pygame.Surface(blink_rect.size)
         blink_surfaces = cycle([on_text_surface, off_text_surface])
@@ -58,6 +60,10 @@ def main():
             pygame.time.set_timer(BLINK_EVENT, 500)
 
         while True:
+            pygame.draw.circle(surf, (255, 255, 255), (newx, surf_rect.centery), 50)
+            disp.blit(render_f, (240, 340))
+            disp.blit(render_title, (190, 100))
+            disp.blit(blink_surface, blink_rect)
             for event in pygame.event.get():
                 if event.type == QUIT:
                     return
@@ -78,11 +84,9 @@ def main():
                     elif  event.key == pygame.K_d:
                         print("you walked sideward right, didn't you?")
 
-            disp.blit(render_f, (240, 340))
-            disp.blit(render_title, (190, 100))
-            disp.blit(blink_surface, blink_rect)
             pygame.display.update()
-            clock.tick(260)
+            clock.tick(30)
+            newx += 1
     finally:
         pygame.quit()
 
