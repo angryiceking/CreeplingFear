@@ -13,8 +13,10 @@ disp = pygame.display.set_mode((640, 360))
 disp_rect = disp.get_rect()
 title = pygame.font.Font('utils/8-BIT WONDER.TTF', 20)
 font = pygame.font.Font('utils/8-BIT WONDER.TTF', 10)
+fq = pygame.font.Font('utils/8-BIT WONDER.TTF', 8)
 
 render_title = title.render('CREEPLING FEAR', True, WHITE)
+render_f = fq.render('Press Q or ESC to Exit', True, WHITE)
 title_rect = render_title.get_rect()
 title_rect.center = (300, 500)
 
@@ -37,7 +39,7 @@ def main():
         off_text_surface = pygame.Surface(blink_rect.size)
         blink_surfaces = cycle([on_text_surface, off_text_surface])
         blink_surface = next(blink_surfaces)
-        pygame.time.set_timer(BLINK_EVENT, 700)
+        pygame.time.set_timer(BLINK_EVENT, 500)
 
         while True:
             for event in pygame.event.get():
@@ -57,7 +59,8 @@ def main():
                     elif  event.key == pygame.K_d:
                         print("you walked sideward right, didn't you?")
 
-            disp.blit(render_title,(190, 100))
+            disp.blit(render_f, (240, 340))
+            disp.blit(render_title, (190, 100))
             disp.blit(blink_surface, blink_rect)
             pygame.display.update()
             clock.tick(60)
