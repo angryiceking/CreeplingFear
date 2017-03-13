@@ -11,10 +11,10 @@ BLINK_EVENT = pygame.USEREVENT + 0
 pygame.init()
 disp = pygame.display.set_mode((640, 360))
 disp_rect = disp.get_rect()
-title = pygame.font.Font('8-BIT WONDER.TTF', 15)
-font = pygame.font.Font('8-BIT WONDER.TTF', 10)
+title = pygame.font.Font('utils/8-BIT WONDER.TTF', 20)
+font = pygame.font.Font('utils/8-BIT WONDER.TTF', 10)
 
-render_title = title.render('This is the Title', True, WHITE)
+render_title = title.render('CREEPLING FEAR', True, WHITE)
 title_rect = render_title.get_rect()
 title_rect.center = (300, 500)
 
@@ -57,7 +57,7 @@ def main():
                     elif  event.key == pygame.K_d:
                         print("you walked sideward right, didn't you?")
 
-            disp.blit(render_title,(210, 50))
+            disp.blit(render_title,(190, 100))
             disp.blit(blink_surface, blink_rect)
             pygame.display.update()
             clock.tick(60)
